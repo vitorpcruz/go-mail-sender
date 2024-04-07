@@ -9,7 +9,7 @@ import (
 
 var (
 	name     = "Campaign X"
-	content  = "Body"
+	content  = "This is the content body"
 	contacts = []string{"email1@e.com", "email2@e.com"}
 )
 
@@ -56,7 +56,7 @@ func Test_NewCampaign_MustValidateName(t *testing.T) {
 	_, err := NewCampaign("", content, contacts)
 
 	// Assert
-	assert.Equal("name is required", err.Error())
+	assert.Equal("name is required with min 5", err.Error())
 }
 
 func Test_NewCampaign_MustValidateContent(t *testing.T) {
@@ -67,7 +67,7 @@ func Test_NewCampaign_MustValidateContent(t *testing.T) {
 	_, err := NewCampaign(name, "", contacts)
 
 	// Assert
-	assert.Equal("content is required", err.Error())
+	assert.Equal("content is required with min 5", err.Error())
 }
 
 func Test_NewCampaign_MustValidateContacts(t *testing.T) {
@@ -75,8 +75,8 @@ func Test_NewCampaign_MustValidateContacts(t *testing.T) {
 	assert := assert.New(t)
 
 	// Act
-	_, err := NewCampaign(name, "", []string{})
+	_, err := NewCampaign(name, content, []string{})
 
 	// Assert
-	assert.Equal("content is required", err.Error())
+	assert.Equal("contacts is required with min 1", err.Error())
 }
