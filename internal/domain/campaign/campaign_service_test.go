@@ -19,8 +19,6 @@ var (
 		Emails:  []string{"test@e.com"},
 	}
 	mockRepo = new(repositoryMock)
-
-	// service = campaign.Service{}
 )
 
 type repositoryMock struct {

@@ -5,5 +5,5 @@ import (
 )
 
 type Handler struct {
-	CampaignService campaign.CampaignService
+	CampaignService campaign.CampaignServiceInterface
 }

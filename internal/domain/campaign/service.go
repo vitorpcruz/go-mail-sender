@@ -7,6 +7,7 @@ import (
 
 type CampaignServiceInterface interface {
 	Create(newCampaign dtos.NewCampaignDTO) (string, error)
+	Get() ([]Campaign, error)
 }
 
 type CampaignService struct {

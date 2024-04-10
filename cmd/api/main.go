@@ -24,7 +24,7 @@ func main() {
 	}
 
 	handler := endpoints.Handler{
-		CampaignService: campaignService,
+		CampaignService: &campaignService,
 	}
 
 	router.Post("/campaign", endpoints.HandlerError(handler.CampaignPost))
