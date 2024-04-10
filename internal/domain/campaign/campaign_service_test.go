@@ -1,11 +1,12 @@
-package campaign
+package campaign_test
 
 import (
 	"errors"
+	"testing"
+
 	"go-mail-sender/internal/domain/campaign"
 	"go-mail-sender/internal/dtos"
 	"go-mail-sender/internal/internal_errors"
-	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -17,9 +18,9 @@ var (
 		Content: "This is the body content",
 		Emails:  []string{"test@e.com"},
 	}
-	repository = new(repositoryMock)
+	mockRepo = new(repositoryMock)
 
-	service = CampaignService{}
+	// service = campaign.Service{}
 )
 
 type repositoryMock struct {
@@ -31,24 +32,37 @@ func (r *repositoryMock) Save(campaign *campaign.Campaign) error {
 	return args.Error(0)
 }
 
+func (r *repositoryMock) Get() ([]campaign.Campaign, error) {
+	newCampaign, _ := campaign.NewCampaign(
+		"this is a greater name",
+		"this is a greater content",
+		[]string{"thisisagreateremail@greateremailcom"},
+	)
+	return []campaign.Campaign{*newCampaign}, nil
+}
+
 func Test_Create_SaveCampaign(t *testing.T) {
-	repository.On("Save", mock.MatchedBy(func(c *campaign.Campaign) bool {
+	service := campaign.Service{
+		Repository: mockRepo,
+	}
+
+	mockRepo.On("Save", mock.MatchedBy(func(c *campaign.Campaign) bool {
 		return true
 	})).Return(nil)
 
-	service.Repository = repository
-
 	service.Create(newCampaign)
 
-	repository.AssertExpectations(t)
+	mockRepo.AssertExpectations(t)
 }
 
 func Test_Create_ValidateRepositorySave(t *testing.T) {
 	assert := assert.New(t)
 
-	repository.On("Save", mock.Anything).Return(internal_errors.ErrInternal)
-
-	service.Repository = repository
+	mockRepo.On("Save", mock.Anything).Return(internal_errors.ErrInternal)
+	service := campaign.Service{
+		Repository: mockRepo,
+	}
+	service.Repository = mockRepo
 
 	_, err := service.Create(newCampaign)
 

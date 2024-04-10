@@ -1,17 +1,16 @@
 package campaign
 
 import (
-	"go-mail-sender/internal/domain/campaign"
 	"go-mail-sender/internal/dtos"
 	"go-mail-sender/internal/internal_errors"
 )
 
-type CampaignService struct {
-	Repository campaign.Repository
+type Service struct {
+	Repository Repository
 }
 
-func (cs *CampaignService) Create(newCampaign dtos.NewCampaignDTO) (string, error) {
-	campaign, err := campaign.NewCampaign(
+func (cs *Service) Create(newCampaign dtos.NewCampaignDTO) (string, error) {
+	campaign, err := NewCampaign(
 		newCampaign.Name,
 		newCampaign.Content,
 		newCampaign.Emails)
@@ -27,4 +26,10 @@ func (cs *CampaignService) Create(newCampaign dtos.NewCampaignDTO) (string, erro
 	}
 
 	return campaign.ID, nil
+}
+
+func (cs *Service) Get() ([]Campaign, error) {
+	campaigns, _ := cs.Repository.Get()
+
+	return campaigns, nil
 }
