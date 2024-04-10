@@ -19,7 +19,7 @@ func main() {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 
-	campaignService := campaign.Service{
+	campaignService := campaign.CampaignService{
 		Repository: &database.CampaignRepository{},
 	}
 

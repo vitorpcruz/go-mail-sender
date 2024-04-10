@@ -42,7 +42,7 @@ func (r *repositoryMock) Get() ([]campaign.Campaign, error) {
 }
 
 func Test_Create_SaveCampaign(t *testing.T) {
-	service := campaign.Service{
+	service := campaign.CampaignService{
 		Repository: mockRepo,
 	}
 
@@ -59,7 +59,7 @@ func Test_Create_ValidateRepositorySave(t *testing.T) {
 	assert := assert.New(t)
 
 	mockRepo.On("Save", mock.Anything).Return(internal_errors.ErrInternal)
-	service := campaign.Service{
+	service := campaign.CampaignService{
 		Repository: mockRepo,
 	}
 	service.Repository = mockRepo
