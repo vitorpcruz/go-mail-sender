@@ -21,9 +21,9 @@ func HandlerError(endpointFunc EndpointFunc) http.HandlerFunc {
 			obj, status, err := endpointFunc(w, r)
 			if err != nil {
 				if errors.Is(err, internal_errors.ErrInternal) {
-					render.Status(r, 500)
+					render.Status(r, http.StatusInternalServerError)
 				} else {
-					render.Status(r, 400)
+					render.Status(r, http.StatusBadRequest)
 				}
 
 				errorsReponse := map[string]string{"error": err.Error()}
